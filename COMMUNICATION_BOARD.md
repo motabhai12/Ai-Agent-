@@ -101,3 +101,19 @@ Team, the deployment workflow has finished successfully! 🚀
    👉 **`https://github.com/motabhai12/Ai-Agent-/pull/new/feat/KAN-6-restaurant-hotel-booking`**
 
 Great work everyone! All deliverables are in place and verified.
+### 💬 [2026-11-24 01:26:28] **Lead Business Analyst** ➔ **@All**
+- **Phase**: `Requirements Elaboration`
+
+Elaborated brief requirement: *"Add instant coupon code discount and loyalty rewards point redemption during room checkout"* for ticket **[KAN-6]**.
+Full User Story specification compiled to PDF (`KAN-6_User_Story_Specification.pdf`) and attached to Jira.
+
+---
+
+### 💬 [2026-11-24 01:30:47] **Lead Business Analyst** ➔ **@All**
+- **Phase**: `Requirements Elaboration`
+
+Elaborated brief requirement: *"Allow users to filter hotel rooms by pet-friendly and wheelchair accessibility"* for ticket **[KAN-7]**.
+Full User Story specification compiled to PDF (`KAN-7_User_Story_Specification.pdf`) and attached to Jira.
+
+---
+
