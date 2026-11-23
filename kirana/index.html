@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apna Kirana Store | Daily Groceries & Essentials in 30 Mins</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Rozha+One&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Notification Bar -->
+  <div class="top-banner">
+    <span>⚡ Instant Delivery in 30 Mins • Free Delivery on orders above ₹499 • Use Code <b>KIRANA50</b> for ₹50 OFF</span>
+  </div>
+
+  <!-- Header -->
+  <header class="kirana-header">
+    <div class="header-container">
+      <div class="brand">
+        <span class="brand-badge">🛒 Local & Fresh</span>
+        <h1 class="brand-title">Apna <span>Kirana</span></h1>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="grocery-search" placeholder="Search Atta, Rice, Dal, Ghee, Milk, Spices, Maggi..." oninput="handleSearch()">
+      </div>
+
+      <!-- Actions -->
+      <div class="header-actions">
+        <button class="whatsapp-btn" onclick="openWhatsAppOrder()">
+          <span class="wa-icon">💬</span> Order via WhatsApp
+        </button>
+        <button class="cart-btn" onclick="toggleCartDrawer()">
+          <span>🛍️</span>
+          <span class="cart-label">My Cart</span>
+          <span class="cart-count" id="cart-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Category Nav Bar -->
+  <nav class="category-nav">
+    <div class="category-scroll" id="category-pills">
+      <button class="cat-pill active" onclick="filterCategory('all')">🏷️ All Items</button>
+      <button class="cat-pill" onclick="filterCategory('Atta, Rice & Dals')">🌾 Atta, Rice & Dals</button>
+      <button class="cat-pill" onclick="filterCategory('Edible Oils & Ghee')">🧈 Oils & Desi Ghee</button>
+      <button class="cat-pill" onclick="filterCategory('Spices & Masalas')">🌶️ Spices & Masalas</button>
+      <button class="cat-pill" onclick="filterCategory('Dairy, Bread & Eggs')">🥛 Dairy, Bread & Eggs</button>
+      <button class="cat-pill" onclick="filterCategory('Snacks & Instant Food')">🍪 Snacks & Maggi</button>
+      <button class="cat-pill" onclick="filterCategory('Tea, Coffee & Drinks')">☕ Tea & Beverages</button>
+    </div>
+  </nav>
+
+  <!-- Main Store Front -->
+  <main class="store-container">
+    
+    <!-- Hero Banner -->
+    <section class="store-hero">
+      <div class="hero-text">
+        <span class="tag">Shudh & Swachh</span>
+        <h2>Shudh Ration, Seedha Aapke Ghar</h2>
+        <p>Your trusted neighborhood grocery store now online. Best wholesale rates on premium brands with same-day doorstep delivery.</p>
+        <div class="hero-highlights">
+          <span>✓ Handpicked Quality</span>
+          <span>✓ Pay via UPI / Cash on Delivery</span>
+          <span>✓ Easy Returns</span>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-num">500+</span>
+          <span class="stat-label">Daily Essentials</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">30 Min</span>
+          <span class="stat-label">Express Delivery</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">₹0</span>
+          <span class="stat-label">Delivery on ₹499+</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Catalog Grid -->
+    <section class="products-section">
+      <div class="section-title-row">
+        <div>
+          <h3 class="section-heading" id="catalog-title">Daily Essentials & Grocery Catalog</h3>
+          <p class="section-subheading">Select quantity or pack size and add directly to your grocery bag.</p>
+        </div>
+        <span class="product-count" id="product-count-label">Showing all products</span>
+      </div>
+
+      <div class="products-grid" id="products-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Slide-Over Cart Drawer -->
+  <div class="cart-backdrop" id="cart-backdrop" onclick="toggleCartDrawer()"></div>
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3>Shopping Cart (<span id="drawer-item-count">0</span>)</h3>
+      <button class="close-drawer" onclick="toggleCartDrawer()">&times;</button>
+    </div>
+
+    <!-- Free Delivery Progress Tracker -->
+    <div class="delivery-progress" id="delivery-progress-box">
+      <div class="progress-label" id="progress-text">Add ₹499 for FREE Delivery</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-bar-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Cart Item List -->
+    <div class="cart-items" id="cart-items-container">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- Cart Footer & Bill Summary -->
+    <div class="cart-footer">
+      <div class="promo-box">
+        <input type="text" id="promo-code" placeholder="Enter Coupon (e.g. KIRANA50)">
+        <button class="apply-btn" onclick="applyPromoCode()">Apply</button>
+      </div>
+      <div class="bill-summary">
+        <div class="bill-row">
+          <span>Items Total (MRP):</span>
+          <span id="bill-subtotal">₹0</span>
+        </div>
+        <div class="bill-row" id="discount-row" style="display: none; color: #16a34a;">
+          <span>Coupon Discount (KIRANA50):</span>
+          <span id="bill-discount">-₹0</span>
+        </div>
+        <div class="bill-row">
+          <span>Delivery Charge:</span>
+          <span id="bill-delivery">₹30</span>
+        </div>
+        <div class="bill-row total-bill">
+          <span>To Pay:</span>
+          <span id="bill-total">₹0</span>
+        </div>
+      </div>
+      <button class="checkout-btn" onclick="openCheckoutModal()">Proceed to Order ➔</button>
+    </div>
+  </aside>
+
+  <!-- Checkout & Delivery Slot Modal -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="checkout-modal-card">
+      <button class="modal-close-btn" onclick="closeCheckoutModal()">&times;</button>
+      <div class="modal-header">
+        <span class="modal-tag">Quick Checkout</span>
+        <h3>Confirm Your Delivery Details</h3>
+        <p>No account required. Quick delivery to your home address.</p>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Customer Full Name *</label>
+            <input type="text" id="cust-name" placeholder="Rajesh Sharma">
+          </div>
+          <div class="input-group">
+            <label>10-Digit Mobile Number *</label>
+            <input type="tel" id="cust-phone" placeholder="9876543210" maxlength="10">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Delivery Address / Flat / House No. *</label>
+          <input type="text" id="cust-address" placeholder="Flat 402, Shanti Heights, Sector 14">
+        </div>
+
+        <div class="input-group">
+          <label>Choose Delivery Slot *</label>
+          <div class="slots-grid">
+            <label class="slot-card">
+              <input type="radio" name="slot" value="Express 30-Min" checked>
+              <div class="slot-content">
+                <strong>⚡ Instant 30-Min</strong>
+                <small>Hyperlocal express</small>
+              </div>
+            </label>
+            <label class="slot-card">
+              <input type="radio" name="slot" value="Morning (7 AM - 9 AM)">
+              <div class="slot-content">
+                <strong>🌅 Morning Slot</strong>
+                <small>7:00 AM - 9:00 AM</small>
+              </div>
+            </label>
+            <label class="slot-card">
+              <input type="radio" name="slot" value="Evening (6 PM - 8 PM)">
+              <div class="slot-content">
+                <strong>🌆 Evening Slot</strong>
+                <small>6:00 PM - 8:00 PM</small>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Payment Method *</label>
+          <div class="payment-methods">
+            <label class="pay-option">
+              <input type="radio" name="payment" value="UPI / QR Code" checked>
+              <span>📱 UPI (GPay, PhonePe, Paytm, QR Code)</span>
+            </label>
+            <label class="pay-option">
+              <input type="radio" name="payment" value="Cash on Delivery">
+              <span>💵 Cash on Delivery (COD)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="checkout-summary-pill">
+          <span>Order Total:</span>
+          <strong id="modal-order-total">₹0</strong>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeCheckoutModal()">Cancel</button>
+        <button class="btn-confirm-order" onclick="submitKiranaOrder()">Place Order (₹<span id="btn-pay-amount">0</span>)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Receipt Success Modal -->
+  <div class="modal-overlay" id="receipt-modal">
+    <div class="receipt-card">
+      <div class="receipt-check">✓</div>
+      <span class="receipt-badge">Order Placed Successfully!</span>
+      <h3 id="receipt-order-id">Order #KRN-0000</h3>
+      <p class="receipt-note">Your order has been sent to our shop packing counter. We are on the way!</p>
+
+      <div class="receipt-details" id="receipt-details-content">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="receipt-actions">
+        <button class="btn-whatsapp-share" id="btn-wa-share" onclick="shareOrderOnWhatsApp()">
+          <span>💬</span> Send Order Details to Store on WhatsApp
+        </button>
+        <button class="btn-continue" onclick="closeReceiptModal()">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Footer -->
+  <footer class="kirana-footer">
+    <div class="footer-wrap">
+      <div>
+        <h4>Apna Kirana Store</h4>
+        <p>Pure ingredients, daily wholesale rates, and fast doorstep delivery in your neighborhood.</p>
+      </div>
+      <div>
+        <p>© 2026 Apna Kirana Online. All Rights Reserved. Built with Anti-Gravity Multi-Agent CI/CD.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
