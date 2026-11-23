@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxeStay & Dine | Luxury Hotel & Restaurant Booking</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="glass-nav">
+    <div class="nav-container">
+      <a href="#" class="brand-logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">LuxeStay <em>& Dine</em></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#hotels" class="nav-link active" onclick="switchTab('hotels')">Hotels & Suites</a>
+        <a href="#restaurants" class="nav-link" onclick="switchTab('restaurants')">Fine Dining</a>
+        <a href="#my-bookings" class="nav-link" onclick="switchTab('bookings')">My Reservations <span class="badge" id="bookings-count">0</span></a>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn btn-outline" onclick="openQuickBook()">Book Now</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-tag">Curated Luxury Hospitality</span>
+      <h1 class="hero-title">Experience Unmatched Stays & Exquisite Culinary Journeys</h1>
+      <p class="hero-subtitle">Discover handpicked 5-star boutique hotels and Michelin-caliber dining experiences with seamless real-time reservation.</p>
+
+      <!-- Search & Filter Card -->
+      <div class="search-card glass-panel">
+        <div class="search-tabs">
+          <button class="search-tab active" id="tab-hotel-search" onclick="toggleSearchMode('hotel')">🏨 Stay at a Hotel</button>
+          <button class="search-tab" id="tab-dining-search" onclick="toggleSearchMode('dining')">🍽️ Reserve a Table</button>
+        </div>
+        <div class="search-form" id="search-form">
+          <div class="form-group">
+            <label for="destination-input">Destination / City</label>
+            <input type="text" id="destination-input" placeholder="e.g. Paris, Tokyo, New York, Bali" value="">
+          </div>
+          <div class="form-group" id="date-checkin-group">
+            <label for="checkin-date">Check-in Date</label>
+            <input type="date" id="checkin-date">
+          </div>
+          <div class="form-group" id="date-checkout-group">
+            <label for="checkout-date">Check-out Date</label>
+            <input type="date" id="checkout-date">
+          </div>
+          <div class="form-group" id="dining-time-group" style="display: none;">
+            <label for="dining-time">Time Slot</label>
+            <select id="dining-time">
+              <option value="18:00">6:00 PM</option>
+              <option value="19:00" selected>7:00 PM</option>
+              <option value="20:00">8:00 PM</option>
+              <option value="21:00">9:00 PM</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="guest-count">Guests</label>
+            <select id="guest-count">
+              <option value="1">1 Guest</option>
+              <option value="2" selected>2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="6">6+ Guests (Private Dining)</option>
+            </select>
+          </div>
+          <button class="btn btn-primary search-btn" onclick="applySearchFilters()">Search</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main View Container -->
+  <main class="main-content container">
+
+    <!-- Section: Hotels -->
+    <section id="hotels-view" class="active-view">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Premier Hotels & Luxury Resorts</h2>
+          <p class="section-subtitle">Hand-curated retreats offering world-class comfort and bespoke hospitality.</p>
+        </div>
+        <div class="filter-pills">
+          <button class="pill active" onclick="filterHotels('all')">All</button>
+          <button class="pill" onclick="filterHotels('Beachfront')">Beachfront</button>
+          <button class="pill" onclick="filterHotels('City Center')">City Center</button>
+          <button class="pill" onclick="filterHotels('Mountain')">Mountain</button>
+          <button class="pill" onclick="filterHotels('Wellness')">Spa & Wellness</button>
+        </div>
+      </div>
+      <div class="grid-cards" id="hotels-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- Section: Restaurants -->
+    <section id="restaurants-view" style="display: none;">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Acclaimed Dining & Gastronomy</h2>
+          <p class="section-subtitle">Book exceptional dining experiences curated by world-renowned chefs.</p>
+        </div>
+        <div class="filter-pills">
+          <button class="pill active" onclick="filterRestaurants('all')">All Cuisines</button>
+          <button class="pill" onclick="filterRestaurants('French')">French Haute</button>
+          <button class="pill" onclick="filterRestaurants('Japanese')">Japanese Omakase</button>
+          <button class="pill" onclick="filterRestaurants('Italian')">Italian Contemporary</button>
+          <button class="pill" onclick="filterRestaurants('Mediterranean')">Mediterranean</button>
+        </div>
+      </div>
+      <div class="grid-cards" id="restaurants-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- Section: My Reservations -->
+    <section id="bookings-view" style="display: none;">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">My Itinerary & Reservations</h2>
+          <p class="section-subtitle">Manage your upcoming stays and dining reservations in one place.</p>
+        </div>
+        <button class="btn btn-outline-danger" onclick="clearAllBookings()">Clear History</button>
+      </div>
+      <div id="bookings-list" class="bookings-container">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal: Room Reservation -->
+  <div class="modal-backdrop" id="hotel-modal">
+    <div class="modal-card glass-modal">
+      <button class="modal-close" onclick="closeModal('hotel-modal')">&times;</button>
+      <div class="modal-header">
+        <span class="modal-badge" id="modal-hotel-category">Hotel Stay</span>
+        <h3 class="modal-title" id="modal-hotel-name">Grand Palace Resort</h3>
+        <p class="modal-location" id="modal-hotel-location">Paris, France</p>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Room Category</label>
+            <select id="modal-room-type" onchange="updateRoomPrice()">
+              <option value="deluxe" data-price="350">Deluxe King Suite ($350 / night)</option>
+              <option value="executive" data-price="550">Executive Ocean View ($550 / night)</option>
+              <option value="presidential" data-price="1200">Presidential Penthouse ($1,200 / night)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Nights</label>
+            <input type="number" id="modal-nights" min="1" max="30" value="2" onchange="updateRoomPrice()">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Guest Full Name</label>
+            <input type="text" id="modal-guest-name" placeholder="Alexander Wright">
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="modal-guest-email" placeholder="alexander@example.com">
+          </div>
+        </div>
+        <div class="price-summary glass-panel">
+          <div class="price-row">
+            <span>Rate per night:</span>
+            <span id="summary-rate">$350</span>
+          </div>
+          <div class="price-row">
+            <span>Duration:</span>
+            <span id="summary-nights">2 Nights</span>
+          </div>
+          <div class="price-row">
+            <span>Taxes & Service Fee (12%):</span>
+            <span id="summary-tax">$84</span>
+          </div>
+          <div class="price-row total-row">
+            <span>Total Amount:</span>
+            <span id="summary-total">$784</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('hotel-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="confirmHotelBooking()">Confirm Reservation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Restaurant Table Reservation -->
+  <div class="modal-backdrop" id="dining-modal">
+    <div class="modal-card glass-modal">
+      <button class="modal-close" onclick="closeModal('dining-modal')">&times;</button>
+      <div class="modal-header">
+        <span class="modal-badge badge-dining" id="modal-dining-category">Fine Dining</span>
+        <h3 class="modal-title" id="modal-dining-name">L'Étoile Gastronomie</h3>
+        <p class="modal-location" id="modal-dining-location">Paris, France</p>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Reservation Date</label>
+            <input type="date" id="modal-table-date">
+          </div>
+          <div class="form-group">
+            <label>Preferred Time</label>
+            <select id="modal-table-time">
+              <option value="18:30">6:30 PM (Early Dinner)</option>
+              <option value="19:30" selected>7:30 PM (Prime Dinner)</option>
+              <option value="20:30">8:30 PM (Late Dinner)</option>
+              <option value="21:30">9:30 PM (Night Seating)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Party Size</label>
+            <select id="modal-table-guests">
+              <option value="2">Table for 2 Guests</option>
+              <option value="4">Table for 4 Guests</option>
+              <option value="6">Chef's Table (6 Guests)</option>
+              <option value="8">Private Dining Room (8 Guests)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Seating Preference</label>
+            <select id="modal-table-seating">
+              <option value="Main Dining Room">Main Dining Room</option>
+              <option value="Window / Panoramic View">Window / Panoramic View</option>
+              <option value="Outdoor Terrace">Outdoor Garden Terrace</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Dietary Restrictions or Special Occasion</label>
+          <input type="text" id="modal-table-notes" placeholder="e.g. Anniversary, Vegetarian, Nut Allergy">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Guest Full Name</label>
+            <input type="text" id="modal-table-name" placeholder="Claire Sterling">
+          </div>
+          <div class="form-group">
+            <label>Contact Phone / Email</label>
+            <input type="text" id="modal-table-contact" placeholder="+1 (555) 234-5678">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('dining-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="confirmDiningBooking()">Reserve Table</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="glass-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">LuxeStay <em>& Dine</em></span>
+        <p>The premier hospitality and reservation platform designed by autonomous DevOps agents.</p>
+      </div>
+      <div class="footer-meta">
+        <p>© 2026 LuxeStay Global Hospitality Inc. Sandboxed execution on Anti-Gravity.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
